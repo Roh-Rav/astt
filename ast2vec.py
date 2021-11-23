@@ -88,17 +88,18 @@ def encode_trees(model, trees, verbose = False):
 
     # initialize the encoding matrix
     X = np.zeros((len(trees), DIM_VAE_))
+    PP =[]
     # iterate over all trees
     for i in progbar(range(len(trees))):
         nodes = trees[i][0]
         adj   = trees[i][1]
         # encode the current tree
-        _, x = model.encode(nodes, adj)
+        pp, x = model.encode(nodes, adj)
         # convert the vector to numpy and store it in the matrix
         X[i, :] = x.detach().numpy()
-
+        PP.append(pp)
     # return the matrix
-    return X
+    return X,PP
 
 def decode_points(model, X, max_size = 100, verbose = False):
     """ Decodes a given matrix of points to trees.
